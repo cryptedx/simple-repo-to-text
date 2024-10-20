@@ -151,7 +151,7 @@ function isBinaryOrImageFile(filePath: string): boolean {
     const binaryExtensions = [
         '.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff', '.ico',
         '.svg', '.webp', '.pdf', '.exe', '.dll', '.bin', '.iso',
-        '.zip', '.tar', '.gz', '.rar', '.7z'
+        '.zip', '.tar', '.gz', '.rar', '.7z', '.vsix'
     ];
     return binaryExtensions.includes(extension);
 }
