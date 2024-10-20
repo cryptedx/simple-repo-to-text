@@ -1,8 +1,8 @@
 {
-  "name": "repototxt",
-  "displayName": "repoToTxt",
-  "description": "",
-  "version": "0.0.1",
+  "name": "simple-repo-to-text",
+  "displayName": "Simple Repo to Text",
+  "description": "A simpler extension to convert local workspace files or GitHub repository content to text.",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.94.0"
   },
@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "repototxt.helloWorld",
-        "title": "Hello World"
+        "command": "simpleRepoToText.convertWorkspace",
+        "title": "Simple Repo To Text - Convert Workspace to PlainText"
       }
     ]
   },
