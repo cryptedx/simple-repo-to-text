@@ -1,5 +1,6 @@
+import * as path from 'path'; // Ensure path is imported
 import * as vscode from 'vscode';
-import { formatFiles } from './utils';
+import { formatFiles, selectDefaultFiles } from './utils';
 
 export function activate(context: vscode.ExtensionContext) {
     let disposable = vscode.commands.registerCommand('simpleRepoToText.convertWorkspace', async () => {
@@ -9,28 +10,43 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        const folderUri = folders[0].uri;
-
         // Get all files in the workspace folder
         const files = await vscode.workspace.findFiles('**/*', '**/node_modules/**');
         
+        // Select default files, excluding binary and image files
+        const defaultFiles = selectDefaultFiles(files.map(file => file.fsPath));
+        
         if (files.length === 0) {
-            vscode.window.showErrorMessage('No files found in the workspace.');
+            vscode.window.showErrorMessage('No suitable files found in the workspace.');
             return;
         }
 
-        const selectedFiles = await vscode.window.showQuickPick(
-            files.map(file => file.fsPath),
+        // Add all files to quick pick items
+        const quickPickItems = files.map(fileUri => {
+            const filePath = fileUri.fsPath;
+            const isDefaultSelected = defaultFiles.includes(filePath);
+            return {
+                label: path.basename(filePath),
+                description: filePath,
+                picked: isDefaultSelected // Only non-binary files are pre-selected
+            };
+        });
+
+        const selectedItems = await vscode.window.showQuickPick(
+            quickPickItems,
             {
                 canPickMany: true,
-                placeHolder: 'Select files to include in the text output'
+                placeHolder: 'Select files to include in the text output',
             }
         );
 
-        if (!selectedFiles || selectedFiles.length === 0) {
+        if (!selectedItems || selectedItems.length === 0) {
             vscode.window.showInformationMessage('No files selected.');
             return;
         }
+
+        // Map back the selected items to their file paths
+        const selectedFiles = selectedItems.map(item => item.description);
 
         try {
             const formattedContent = await formatFiles(selectedFiles);
@@ -40,7 +56,6 @@ export function activate(context: vscode.ExtensionContext) {
             });
             await vscode.window.showTextDocument(document);
         } catch (error) {
-            // Correcting error handling here by casting to 'Error'
             if (error instanceof Error) {
                 vscode.window.showErrorMessage(`Error formatting files: ${error.message}`);
             } else {

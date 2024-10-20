@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.1] - 2024-10-21
+
+### Added
+
+- Image and binary files are now displayed in the file selection list but are **not selected by default**. This makes it easier to focus on selecting only text-based files.
+
 ## [0.1.0] - 2024-10-20
 
 ### Added
@@ -10,11 +16,3 @@ All notable changes to this project will be documented in this file.
 - Added functionality to convert the current workspace files into a formatted plain text document.
 - Integrated command `Simple Repo To Text - Convert Workspace to PlainText` to allow file selection from the workspace.
 - Display formatted directory structure and file contents in the generated output.
-
-### Fixed
-
-- N/A - Initial release.
-
-### Changed
-
-- N/A - Initial release.

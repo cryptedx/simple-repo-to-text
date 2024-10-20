@@ -7,6 +7,7 @@ This VSCode extension allows you to quickly convert local workspace files or a G
 - **Convert Workspace to PlainText**: Select files from your current workspace and generate a formatted text output.
 - **Integrated Workflow**: Use VSCode commands to select and format the files into one cohesive output.
 - **Directory Structure**: Includes a visual representation of the directory structure in the final output.
+- **Binary File Handling**: Image and binary files are displayed in the file selection list but are not selected by default, making it easier to focus on text-based files.
 
 ## Installation
 
@@ -59,6 +60,42 @@ This will generate a `.vsix` file that can be shared or installed in VSCode.
 
 Contributions are welcome! Feel free to submit issues or pull requests for new features or bug fixes.
 
+## Supported File Types for Syntax Highlighting
+
+The extension includes language detection for the following file types:
+
+- `.ts` - TypeScript
+- `.js` - JavaScript
+- `.json` - JSON
+- `.html` - HTML
+- `.css` - CSS
+- `.md` - Markdown
+- `.py` - Python
+- `.java` - Java
+- `.c` - C
+- `.cpp` - C++
+- `.cs` - C#
+- `.rb` - Ruby
+- `.php` - PHP
+- `.go` - Go
+- `.rs` - Rust
+- `.swift` - Swift
+- `.kt` - Kotlin
+- `.sh` - Shell script
+- `.yaml`, `.yml` - YAML
+- `.xml` - XML
+- `.jsx` - JavaScript React (JSX)
+- `.tsx` - TypeScript React (TSX)
+- `.vue` - Vue.js
+- `.scss` - SCSS (Sass)
+- `.less` - LESS (CSS preprocessor)
+- `.lua` - Lua
+- `.sql` - SQL
+- `.r` - R
+- `.pl` - Perl
+- `.h` - Header files for C/C++
+- `.dart` - Dart
+
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](https://github.com/cryptedx/simple-repo-to-text/blob/master/LICENSE).
