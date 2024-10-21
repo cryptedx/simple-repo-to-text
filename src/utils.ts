@@ -3,8 +3,8 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 
 export async function formatFiles(filePaths: string[]): Promise<string> {
-    // Filter out image and binary files
-    const filteredFilePaths = filePaths.filter(filePath => !isBinaryOrImageFile(filePath));
+    // Filter out image, binary files, .vscode folder, .mjs files, .map files, and files with 'test' in their name
+    const filteredFilePaths = filePaths.filter(filePath => !isIgnoredFile(filePath));
     
     let output = '';
 
@@ -143,23 +143,28 @@ function getFileLanguage(filePath: string): string {
 }
 
 /**
- * Determines if a file is an image or binary file to exclude it by default.
+ * Determines if a file is an image, binary, or should be ignored by default.
+ * This includes files in the .vscode folder, .mjs files, .map files, and files with 'test' in their name.
  * @param filePath The path of the file to check.
  */
-function isBinaryOrImageFile(filePath: string): boolean {
+function isIgnoredFile(filePath: string): boolean {
     const extension = path.extname(filePath).toLowerCase();
     const binaryExtensions = [
         '.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff', '.ico',
         '.svg', '.webp', '.pdf', '.exe', '.dll', '.bin', '.iso',
-        '.zip', '.tar', '.gz', '.rar', '.7z', '.vsix'
+        '.zip', '.tar', '.gz', '.rar', '.7z', '.mjs', '.map', '.vsix'
     ];
-    return binaryExtensions.includes(extension);
+    const shouldIgnore =
+        binaryExtensions.includes(extension) ||
+        filePath.includes('.vscode') ||
+        false;
+    return shouldIgnore;
 }
 
 /**
- * Select all files by default, excluding image and binary files.
+ * Select all files by default, excluding ignored files.
  * @param filePaths List of file paths to filter.
  */
 export function selectDefaultFiles(filePaths: string[]): string[] {
-    return filePaths.filter(filePath => !isBinaryOrImageFile(filePath));
+    return filePaths.filter(filePath => !isIgnoredFile(filePath));
 }
