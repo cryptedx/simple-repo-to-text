@@ -2,7 +2,7 @@
   "name": "simple-repo-to-text",
   "displayName": "Simple Repo to Text",
   "description": "A simpler extension to convert local workspace files or GitHub repository content to text.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "engines": {
     "vscode": "^1.94.0"
   },

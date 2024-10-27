@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.2] - 2024-10-27
+
+### Fixed
+- Updated path handling to correctly resolve file paths relative to the root of the workspace instead of the OS root.
+- Added error handling for undefined file paths during filtering and reading.
+- Improved robustness of directory structure generation and file content output.
+
 ## [0.1.1] - 2024-10-21
 
 ### Added

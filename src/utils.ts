@@ -3,21 +3,44 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 
 export async function formatFiles(filePaths: string[]): Promise<string> {
+    if (!vscode.workspace.workspaceFolders || vscode.workspace.workspaceFolders.length === 0) {
+        throw new Error('No workspace folder is open.');
+    }
+
+    // Get the root path of the workspace
+    const workspaceRoot = vscode.workspace.workspaceFolders[0].uri.fsPath;
+
     // Filter out image, binary files, .vscode folder, .mjs files, .map files, and files with 'test' in their name
-    const filteredFilePaths = filePaths.filter(filePath => !isIgnoredFile(filePath));
-    
+    const filteredFilePaths = filePaths.map(filePath => path.resolve(filePath)).filter(filePath => {
+        if (!filePath) {
+            console.error('Encountered undefined filePath during filtering');
+            return false;
+        }
+        return !isIgnoredFile(filePath);
+    });
+
     let output = '';
 
     // Constructing directory structure header
     output += `# Directory Structure\n\n`;
-    const tree = constructTree(filteredFilePaths);
+    const tree = constructTree(filteredFilePaths.map(filePath => path.relative(workspaceRoot, filePath)));
     output += buildTreeString(tree);
     output += `\n===============================================================\n`;
 
     // Reading each file and formatting the output
     for (const filePath of filteredFilePaths) {
-        const relativePath = path.relative(vscode.workspace.rootPath || '', filePath);
-        const content = await fs.readFile(filePath, 'utf-8');
+        if (!filePath) {
+            console.error('Encountered undefined filePath while reading files');
+            continue;
+        }
+        const relativePath = path.relative(workspaceRoot, filePath);
+        let content;
+        try {
+            content = await fs.readFile(filePath, 'utf-8');
+        } catch (error) {
+            console.error(`Failed to read file ${filePath}:`, error);
+            continue;
+        }
 
         output += `# File: ${relativePath}\n\n`;
         output += `\`\`\`${getFileLanguage(relativePath)}\n`;
